@@ -20,7 +20,10 @@
     ],
     "rules": {
       "prettier/prettier": [
-        "error"
+        "warn",
+        {
+          "endOfLine": "auto"
+        }
       ]
     }
   },
@@ -28,7 +31,7 @@
     "build"
   ],
   "prettier": {
-    "trailingComma": "es5",
+    "trailingComma": "all",
     "semi": false,
     "singleQuote": true,
     "useTabs": false,
