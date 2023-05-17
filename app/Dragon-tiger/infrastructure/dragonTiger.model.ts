@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
-import { GameEntity } from '../domain/game.entity'
+import { DragonTigerEntity } from '../domain/dragonTiger.entity'
 
-const GameSchema = new Schema<GameEntity>(
+const DragonTigerSchema = new Schema<DragonTigerEntity>(
   {
     active: {
       type: Boolean,
@@ -42,6 +42,32 @@ const GameSchema = new Schema<GameEntity>(
     },
 
     // !Note: Add game logic properties here.
+
+    // Pagos
+    chanceSimple: {
+      type: Number,
+      default: 2,
+    },
+    tie: {
+      type: Number,
+      default: 12,
+    },
+    perfectTie: {
+      type: Number,
+      default: 75,
+    },
+    goldenK: {
+      type: Number,
+      default: 4,
+    },
+    jackpot: {
+      type: Number,
+      default: 75,
+    },
+    roundDuration: {
+      type: Number,
+      default: 10,
+    },
   },
   {
     versionKey: false,
@@ -49,6 +75,6 @@ const GameSchema = new Schema<GameEntity>(
   },
 )
 
-const GameModel = model('game', GameSchema)
+const DragonTigerModel = model('dragonTiger', DragonTigerSchema)
 
-export default GameModel
+export default DragonTigerModel
