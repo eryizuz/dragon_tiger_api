@@ -15,8 +15,8 @@ export interface DragonTigerRepository {
   getDragonTigerByOperator(operatorUuid: string): Promise<DragonTigerEntity | null>
   updateOperatorInDragonTiger(uuid: string, operatorUuid: string): Promise<DragonTigerEntity | null>
   addCroupierToDragonTiger(uuid: string, croupierUuid: string): Promise<DragonTigerEntity | null>
-  DragonTigersInTheClient(dragonTigers: string[]): Promise<DragonTigerEntity[] | []>
-  DragonTigersAvailableOnTheClient(dragonTigers: string[]): Promise<DragonTigerEntity[] | []>
+  dragonTigersInTheClient(dragonTigers: string[]): Promise<DragonTigerEntity[] | []>
+  dragonTigersAvailableOnTheClient(dragonTigers: string[]): Promise<DragonTigerEntity[] | []>
   changeDragonTigerLimits(
     uuid: string,
     limits: DragonTigerLimits,

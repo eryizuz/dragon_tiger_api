@@ -24,7 +24,7 @@ export class GameMongoRepository implements GameRepository {
 
   public updateGame = async (
     uuid: string,
-    dataToUpdate: UpdateGameEntity
+    dataToUpdate: UpdateGameEntity,
   ): Promise<GameEntity | null> => {
     const game = await GameModel.findOneAndUpdate({ uuid }, dataToUpdate, { new: true }).exec()
     if (!game) return null
@@ -36,7 +36,7 @@ export class GameMongoRepository implements GameRepository {
     const game = await GameModel.findOneAndUpdate(
       { uuid },
       { active: false, status: false },
-      { new: true }
+      { new: true },
     ).exec()
     if (!game) return null
 
@@ -45,12 +45,12 @@ export class GameMongoRepository implements GameRepository {
 
   public addOperatorToGame = async (
     uuid: string,
-    operatorUuid: string
+    operatorUuid: string,
   ): Promise<GameEntity | null> => {
     const game = await GameModel.findOneAndUpdate(
       { uuid },
       { operator: operatorUuid },
-      { new: true }
+      { new: true },
     ).exec()
     if (!game) return null
 
@@ -68,12 +68,12 @@ export class GameMongoRepository implements GameRepository {
 
   public addCroupierToGame = async (
     uuid: string,
-    croupierUuid: string
+    croupierUuid: string,
   ): Promise<GameEntity | null> => {
     const game = await GameModel.findOneAndUpdate(
       { uuid },
       { croupier: croupierUuid },
-      { new: true }
+      { new: true },
     ).exec()
     if (!game) return null
 
@@ -92,7 +92,7 @@ export class GameMongoRepository implements GameRepository {
 
   public changeGameLimits = async (
     uuid: string,
-    limits: GameLimits
+    limits: GameLimits,
   ): Promise<GameEntity | null> => {
     const game = await GameModel.findOneAndUpdate({ uuid }, limits, { new: true }).exec()
     if (!game) return null

@@ -45,6 +45,8 @@ Server.middleware.registerNamed({
   createOperator: () => import('../app/Operator/infrastructure/createOperator.middleware'),
   createCroupier: () => import('App/Croupiers/infrastructure/createCroupier.middleware'),
   createGame: () => import('../app/Game/infrastructure/createGame.middleware'),
+  createDragonTiger: () =>
+    import('../app/Dragon-tiger/infrastructure/createDragonTiger.middleware'),
   createClient: () => import('../app/Client/infrastructure/createClient.middleware'),
   createUser: () => import('../app/User/infrastructure/createUser.middleware'),
   createFaq: () => import('App/Faqs/infratructure/createFaq.middleware'),

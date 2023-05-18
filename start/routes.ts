@@ -34,6 +34,7 @@ import faqRoutes from 'App/Faqs/infratructure/faq.routes'
 import questionRoutes from 'App/questions/infratructure/question.routes'
 import RolRoutes from 'App/Rol/infrastructure/role.routes'
 import ChipRoutes from 'App/Chip/infrastructure/chip.routes'
+import DragonTigerRoutes from 'App/Dragon-tiger/infrastructure/dragonTiger.routes'
 
 Route.group(AuthenticationRoutes).prefix('auth')
 Route.group(AuditoriesRoutes).prefix('auditories')
@@ -41,6 +42,7 @@ Route.group(UserRoutes).prefix('user')
 Route.group(OperatorRoutes).prefix('operator')
 Route.group(CroupierRoute).prefix('croupier')
 Route.group(GameRoutes).prefix('game')
+Route.group(DragonTigerRoutes).prefix('dragon-tiger')
 Route.group(LogRoutes).prefix('log')
 Route.group(ClientRoutes).prefix('client')
 Route.group(faqRoutes).prefix('faq')

@@ -1,3 +1,3 @@
-import { DragonTigerEntity } from '../infrastructure/dragonTiger.model'
+import { DragonTigerEntity } from './dragonTiger.entity'
 
 export interface DragonTigerLimits extends Pick<DragonTigerEntity, 'minBet' | 'maxBet'> {}
