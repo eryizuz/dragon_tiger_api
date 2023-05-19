@@ -63,12 +63,12 @@ export class DragonTigerUseCases {
   }
 
   public DragonTigersInTheClient = async (DragonTigers: string[]) => {
-    const allDragonTigers = await this.dragonTigerRepository.DragonTigersInTheClient(DragonTigers)
+    const allDragonTigers = await this.dragonTigerRepository.dragonTigersInTheClient(DragonTigers)
     return allDragonTigers
   }
 
   public DragonTigersAvailableOnTheClient = async (DragonTigers: string[]) => {
-    const allDragonTigers = await this.dragonTigerRepository.DragonTigersAvailableOnTheClient(
+    const allDragonTigers = await this.dragonTigerRepository.dragonTigersAvailableOnTheClient(
       DragonTigers,
     )
     return allDragonTigers
