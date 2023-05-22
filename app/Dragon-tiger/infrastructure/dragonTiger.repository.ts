@@ -67,6 +67,14 @@ export class DragonTigerMongoRepository implements DragonTigerRepository {
 
     return dragonTiger
   }
+  public getDragonTigerByProviderId = async (
+    providerId: string,
+  ): Promise<DragonTigerEntity | null> => {
+    const dragonTiger = await DragonTigerModel.findOne({ providerId }).exec()
+    if (!dragonTiger) return null
+
+    return dragonTiger
+  }
 
   public updateOperatorInDragonTiger = this.addOperatorToDragonTiger
 

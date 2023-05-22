@@ -46,6 +46,11 @@ export class DragonTigerUseCases {
     return dragonTiger
   }
 
+  public getDragonTigerByProviderId = async (providerId: string) => {
+    const dragonTiger = await this.dragonTigerRepository.getDragonTigerByProviderId(providerId)
+    return dragonTiger
+  }
+
   public updateOperatorInDragonTiger = async (uuid: string, operatorUuid: string) => {
     const dragonTiger = await this.dragonTigerRepository.updateOperatorInDragonTiger(
       uuid,

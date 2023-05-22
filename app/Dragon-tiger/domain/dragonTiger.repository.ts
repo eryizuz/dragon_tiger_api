@@ -13,6 +13,7 @@ export interface DragonTigerRepository {
   deleteDragonTiger(uuid: string): Promise<DragonTigerEntity | null>
   addOperatorToDragonTiger(uuid: string, operatorUuid: string): Promise<DragonTigerEntity | null>
   getDragonTigerByOperator(operatorUuid: string): Promise<DragonTigerEntity | null>
+  getDragonTigerByProviderId(providerId: string): Promise<DragonTigerEntity | null>
   updateOperatorInDragonTiger(uuid: string, operatorUuid: string): Promise<DragonTigerEntity | null>
   addCroupierToDragonTiger(uuid: string, croupierUuid: string): Promise<DragonTigerEntity | null>
   dragonTigersInTheClient(dragonTigers: string[]): Promise<DragonTigerEntity[] | []>

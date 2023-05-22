@@ -13,5 +13,5 @@ export interface RoundEntity {
   open: boolean
   crupier: string
   result: DragonTigerResultType | null
-  winner?: DragonTigerWinners
+  winner: DragonTigerWinners | null
 }
