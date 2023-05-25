@@ -15,6 +15,7 @@ export default class AppProvider {
     await import('../config/database')
     await import('../start/socket')
     await import('../app/Shared/Workers/currencies.workers')
+    await import('../app/Shared/Workers/RoundGenerator.workers')
   }
 
   public async shutdown() {

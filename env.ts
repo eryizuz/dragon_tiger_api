@@ -23,4 +23,5 @@ export default Env.rules({
   NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
   MONGO_URI: Env.schema.string(),
   CURRENCIES_RATES_API_KEY: Env.schema.string(),
+  BACK_URL: Env.schema.string(),
 })

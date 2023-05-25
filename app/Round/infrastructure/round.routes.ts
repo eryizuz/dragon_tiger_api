@@ -3,7 +3,7 @@ import { roundController } from './dependencies'
 
 const RoundRoutes = () => {
   Route.put('/start', roundController.startRound)
-  Route.put('/end', roundController.startRound)
+  Route.put('/end', roundController.closeRound)
 }
 
 export default RoundRoutes

@@ -1,7 +1,8 @@
 import { HttpContext } from '@adonisjs/core/build/standalone'
 import { RoundUseCases } from '../application/RoundUseCases'
 import { dragonTigerUseCases } from 'App/Dragon-tiger/infrastructure/dependencies'
-import { RoundEntity } from '../domain/round.entity'
+import { DragonTigerWinners, RoundEntity } from '../domain/round.entity'
+import { getWinner } from 'App/Shared/Helpers/dragon-tiger-utils'
 
 export class RoundController {
   constructor(private roundUseCases: RoundUseCases) {}
@@ -38,7 +39,7 @@ export class RoundController {
 
   public closeRound = async (ctx: HttpContext) => {
     const { request, response } = ctx
-    const { providerId, roundId } = request.body()
+    const { providerId, roundId, card1, card2 } = request.body()
 
     try {
       const dragonTiger = await dragonTigerUseCases.getDragonTigerByUuid(providerId)
@@ -53,6 +54,21 @@ export class RoundController {
       if (!lastRound) {
         return response.status(404).json({ error: 'No se encuentra el ultimo round!' })
       }
-    } catch (err) {}
+      const winner = getWinner(card1, card2)
+      const closeRound = await this.roundUseCases.closeRound(lastRound.uuid as string, {
+        open: false,
+        end_date: new Date(),
+        result: { card1, card2 },
+        winner: winner as DragonTigerWinners,
+      })
+
+      if (!closeRound) {
+        return response.status(404).json({ error: 'No se encuentra el Round' })
+      }
+
+      return response.status(200).json({ message: 'Round closed', round: closeRound })
+    } catch (err) {
+      return response.status(400).json({ message: 'No se pudo cerrar el round', err })
+    }
   }
 }

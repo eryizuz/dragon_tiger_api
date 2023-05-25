@@ -14,4 +14,5 @@ export interface RoundEntity {
   crupier: string
   result: DragonTigerResultType | null
   winner: DragonTigerWinners | null
+  uuid?: string
 }

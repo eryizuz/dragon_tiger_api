@@ -1,5 +1,6 @@
 import { RoundEntity } from '../domain/round.entity'
 import { RoundRepository } from '../domain/round.repository'
+import { UpdateRoundEntity } from '../domain/updateRound.entity'
 import RoundModel from './round.model'
 
 export class RoundMongoRepository implements RoundRepository {
@@ -20,8 +21,11 @@ export class RoundMongoRepository implements RoundRepository {
     return round
   }
 
-  public closeRound = async (uuid: string): Promise<RoundEntity | null> => {
-    const round = await RoundModel.findOneAndUpdate({ uuid }, { open: false }, { new: true })
+  public closeRound = async (
+    uuid: string,
+    dataToUpdate: UpdateRoundEntity,
+  ): Promise<RoundEntity | null> => {
+    const round = await RoundModel.findOneAndUpdate({ uuid }, { ...dataToUpdate }, { new: true })
       .sort({ createdAt: -1 })
       .exec()
     if (!round) return null

@@ -1,6 +1,7 @@
 import { RoundEntity } from '../domain/round.entity'
 import { RoundRepository } from '../domain/round.repository'
 import { Round } from '../domain/round.value'
+import { UpdateRoundEntity } from '../domain/updateRound.entity'
 
 export class RoundUseCases {
   constructor(private readonly roundRepository: RoundRepository) {}
@@ -15,8 +16,8 @@ export class RoundUseCases {
     const round = await this.roundRepository.getLastRoundByProviderId(dragonTigerId, providerId)
     return round
   }
-  public closeRound = async (uuid: string) => {
-    const round = await this.roundRepository.closeRound(uuid)
+  public closeRound = async (uuid: string, dataToUpdate: UpdateRoundEntity) => {
+    const round = await this.roundRepository.closeRound(uuid, dataToUpdate)
     return round
   }
 }
