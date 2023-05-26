@@ -7,6 +7,9 @@ import {
   treblolCartas,
 } from 'App/Bet/domain/Card'
 import { randomNumber } from './randomNumber'
+import { DragonTigerWinners } from 'App/Round/domain/round.entity'
+import { DragonTigerEntity } from 'App/Dragon-tiger/domain/dragonTiger.entity'
+import { BetEntity } from 'App/Bet/domain/bet.entity'
 
 export const getRandomCard = () => {
   const randomNum = randomNumber(1, 4)
@@ -47,4 +50,90 @@ export const getWinner = (card1: Card, card2: Card): string => {
     return tigerDragonWinnersTypes.PERFECTTIE
   }
   return 'none'
+}
+export const useWinnerFilter = (roundWinner: DragonTigerWinners) => {
+  const filter = {}
+  switch (roundWinner) {
+    case 'dragon': {
+      Object.assign(filter, {
+        'bet.dragon': {
+          $gt: 0,
+        },
+      })
+      break
+    }
+    case 'tiger': {
+      Object.assign(filter, {
+        'bet.tiger': {
+          $gt: 0,
+        },
+      })
+      break
+    }
+    case 'tie': {
+      Object.assign(filter, {
+        'bet.tie': {
+          $gt: 0,
+        },
+      })
+      break
+    }
+    case 'perfectTie': {
+      Object.assign(filter, {
+        'bet.perfectTie': {
+          $gt: 0,
+        },
+      })
+      break
+    }
+  }
+
+  return filter
+}
+
+export const getBetEarnings = (
+  roundWinner: DragonTigerWinners,
+  dragonTiger: DragonTigerEntity,
+  bet: BetEntity,
+) => {
+  const { chanceSimple, tie, perfectTie } = dragonTiger
+  const {
+    bet: { dragon, tiger, perfectTie: perfectTieAmount, tie: tieAmount },
+  } = bet
+  const earning = {}
+  switch (roundWinner) {
+    case 'dragon': {
+      Object.assign(earning, {
+        amountOriginal: dragon,
+        bet: 'dragon',
+        earning: dragon * chanceSimple,
+      })
+      break
+    }
+    case 'tiger': {
+      Object.assign(earning, {
+        amountOriginal: tiger,
+        bet: 'tiger',
+        earning: tiger * chanceSimple,
+      })
+      break
+    }
+    case 'tie': {
+      Object.assign(earning, {
+        amountOriginal: tieAmount,
+        bet: 'tie',
+        earning: tie * tieAmount,
+      })
+      break
+    }
+    case 'perfectTie': {
+      Object.assign(earning, {
+        amountOriginal: perfectTieAmount,
+        bet: 'perfectTie',
+        earning: perfectTie * perfectTieAmount,
+      })
+      break
+    }
+  }
+  return earning
 }

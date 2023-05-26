@@ -38,6 +38,7 @@ const RoundSchema = new Schema<RoundEntity>(
           type: String,
         },
       },
+      default: null,
     },
     winner: {
       type: String,
@@ -53,6 +54,9 @@ const RoundSchema = new Schema<RoundEntity>(
       default: true,
     },
     crupier: {
+      type: String,
+    },
+    uuid: {
       type: String,
     },
   },

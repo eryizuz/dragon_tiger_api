@@ -32,4 +32,10 @@ export class RoundMongoRepository implements RoundRepository {
 
     return round
   }
+  public getRoundByUuid = async (uuid: string): Promise<RoundEntity | null> => {
+    const round = await RoundModel.findOne({ uuid }).exec()
+    if (!round) return null
+
+    return round
+  }
 }

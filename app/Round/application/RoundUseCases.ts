@@ -20,4 +20,8 @@ export class RoundUseCases {
     const round = await this.roundRepository.closeRound(uuid, dataToUpdate)
     return round
   }
+  public getRoundByUuid = async (uuid: string) => {
+    const round = await this.roundRepository.getRoundByUuid(uuid)
+    return round
+  }
 }
