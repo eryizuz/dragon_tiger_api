@@ -42,6 +42,7 @@ const RoundSchema = new Schema<RoundEntity>(
     },
     winner: {
       type: String,
+      default: null,
     },
     providerId: {
       type: String,

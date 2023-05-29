@@ -3,6 +3,7 @@ import { RoundUseCases } from '../application/RoundUseCases'
 import { dragonTigerUseCases } from 'App/Dragon-tiger/infrastructure/dependencies'
 import { DragonTigerWinners, RoundEntity } from '../domain/round.entity'
 import { getWinner } from 'App/Shared/Helpers/dragon-tiger-utils'
+import SocketServer from 'App/Shared/Services/SocketServer'
 
 export class RoundController {
   constructor(private roundUseCases: RoundUseCases) {}
@@ -30,6 +31,14 @@ export class RoundController {
         winner: null,
       }
       const startRound = await this.roundUseCases.startRound(round)
+      SocketServer.io.to(`${dragonTiger.uuid}`).emit('round:start', {
+        msg: 'Round opened',
+        round: {
+          start_date: startDate,
+          end_date: futureDate,
+          ID_Ronda: round.uuid,
+        },
+      })
       console.log('Round start', startRound)
       return response.status(201).json({ message: 'Round created', round: startRound })
     } catch (error) {
@@ -65,7 +74,14 @@ export class RoundController {
       if (!closeRound) {
         return response.status(404).json({ error: 'No se encuentra el Round' })
       }
-
+      SocketServer.io.to(`${dragonTiger.uuid}`).emit('round:end', {
+        msg: 'Round closed',
+        result: {
+          card1,
+          card2,
+        },
+        winner,
+      })
       return response.status(200).json({ message: 'Round closed', round: closeRound })
     } catch (err) {
       return response.status(400).json({ message: 'No se pudo cerrar el round', err })
