@@ -13,7 +13,7 @@ export class RoundController {
     const { providerId, roundId } = request.body()
 
     try {
-      const dragonTiger = await dragonTigerUseCases.getDragonTigerByUuid(providerId)
+      const dragonTiger = await dragonTigerUseCases.getDragonTigerByProviderId(providerId)
       if (!dragonTiger)
         return response.status(404).json({ error: 'No se encuentra el dragon tiger!' })
       const secondsToAdd = dragonTiger.roundDuration
@@ -48,10 +48,10 @@ export class RoundController {
 
   public closeRound = async (ctx: HttpContext) => {
     const { request, response } = ctx
-    const { providerId, roundId, card1, card2 } = request.body()
-
+    const { providerId, roundId, result } = request.body()
+    const { card1, card2 } = result
     try {
-      const dragonTiger = await dragonTigerUseCases.getDragonTigerByUuid(providerId)
+      const dragonTiger = await dragonTigerUseCases.getDragonTigerByProviderId(providerId)
       if (!dragonTiger) {
         return response.status(404).json({ error: 'No se encuentra el dragon tiger!' })
       }
@@ -60,6 +60,8 @@ export class RoundController {
         dragonTiger.uuid as string,
         roundId,
       )
+      console.log('lastRound', lastRound)
+
       if (!lastRound) {
         return response.status(404).json({ error: 'No se encuentra el ultimo round!' })
       }
@@ -70,6 +72,7 @@ export class RoundController {
         result: { card1, card2 },
         winner: winner as DragonTigerWinners,
       })
+      console.log('closeRound', closeRound)
 
       if (!closeRound) {
         return response.status(404).json({ error: 'No se encuentra el Round' })

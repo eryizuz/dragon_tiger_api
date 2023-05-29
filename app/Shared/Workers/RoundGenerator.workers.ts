@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { randomNumber } from '../Helpers/randomNumber'
+// import { randomNumber } from '../Helpers/randomNumber'
 import { getRandomCard } from '../Helpers/dragon-tiger-utils'
+import { GenerateId } from '../Helpers/generate-id.helpers'
 const cron = require('node-cron')
 
 // "*/10 * * * * *" symbols to cron function every 10 segs
@@ -9,7 +10,8 @@ const cron = require('node-cron')
 const roundGenerator = () => {
   cron.schedule('*/15 * * * * *', async () => {
     // cron.schedule("*/1 * * * *", () => {
-    const roundId = randomNumber(100, 200).toString()
+    const { uuid } = new GenerateId()
+    const roundId = uuid
     axios
       .put(`${process.env.BACK_URL as string}round/start`, {
         providerId: '101',
