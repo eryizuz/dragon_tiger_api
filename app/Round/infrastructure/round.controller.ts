@@ -36,7 +36,7 @@ export class RoundController {
         round: {
           start_date: startDate,
           end_date: futureDate,
-          ID_Ronda: round.uuid,
+          ID_Ronda: startRound.uuid,
         },
       })
       console.log('Round start', startRound)
