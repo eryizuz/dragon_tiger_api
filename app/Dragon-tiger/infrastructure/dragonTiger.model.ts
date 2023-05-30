@@ -68,6 +68,12 @@ const DragonTigerSchema = new Schema<DragonTigerEntity>(
       type: Number,
       default: 10,
     },
+    nameOfDragon: {
+      type: String,
+    },
+    nameOfTiger: {
+      type: String,
+    },
   },
   {
     versionKey: false,
