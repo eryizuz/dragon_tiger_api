@@ -41,7 +41,6 @@ export class BetController {
     const { winner } = round
     const winnerFilter = useWinnerFilter(winner as DragonTigerWinners)
     const betWinner = await this.betUseCases.getWinner({
-      result: { $ne: null },
       round: round.uuid,
       ...winnerFilter,
     })
