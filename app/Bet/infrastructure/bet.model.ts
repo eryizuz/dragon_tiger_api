@@ -6,6 +6,9 @@ const BetDragonTigerSchema = new Schema<BetEntity>(
     transactionId: {
       type: String,
     },
+    uuid: {
+      type: String,
+    },
     player: {
       type: String,
     },
