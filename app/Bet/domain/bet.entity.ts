@@ -1,8 +1,17 @@
+import { DragonTigerWinners } from 'App/Round/domain/round.entity'
+
+export interface JackpotBet {
+  amount: number
+  winner: DragonTigerWinners
+  rounds: number
+}
+
 export interface BetFields {
   dragon: number
   tiger: number
   tie: number
   perfectTie: number
+  jackpot: JackpotBet
 }
 
 export interface BetEntity {

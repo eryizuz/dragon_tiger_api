@@ -42,6 +42,18 @@ const BetDragonTigerSchema = new Schema<BetEntity>(
         type: Number,
         default: 0,
       },
+      jackpot: {
+        amount: {
+          type: Number,
+        },
+        winner: {
+          type: String,
+        },
+        rounds: {
+          type: Number,
+          default: 0,
+        },
+      },
     },
   },
   { timestamps: true },

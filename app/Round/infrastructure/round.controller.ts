@@ -3,6 +3,8 @@ import { RoundUseCases } from '../application/RoundUseCases'
 import { dragonTigerUseCases } from 'App/Dragon-tiger/infrastructure/dependencies'
 import { DragonTigerWinners, RoundEntity } from '../domain/round.entity'
 import { getWinner } from 'App/Shared/Helpers/dragon-tiger-utils'
+import { Worker } from 'worker_threads'
+const worker = new Worker('./app/Shared/Services/Worker')
 
 export class RoundController {
   constructor(private roundUseCases: RoundUseCases) {}
