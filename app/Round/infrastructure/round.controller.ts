@@ -5,6 +5,7 @@ import { DragonTigerWinners, RoundEntity } from '../domain/round.entity'
 import { getWinner } from 'App/Shared/Helpers/dragon-tiger-utils'
 import { Worker } from 'worker_threads'
 const worker = new Worker('./app/Shared/Services/Worker')
+import SocketServer from 'App/Shared/Services/SocketServer'
 
 export class RoundController {
   constructor(private roundUseCases: RoundUseCases) {}
@@ -14,7 +15,7 @@ export class RoundController {
     const { providerId, roundId } = request.body()
 
     try {
-      const dragonTiger = await dragonTigerUseCases.getDragonTigerByUuid(providerId)
+      const dragonTiger = await dragonTigerUseCases.getDragonTigerByProviderId(providerId)
       if (!dragonTiger)
         return response.status(404).json({ error: 'No se encuentra el dragon tiger!' })
       const secondsToAdd = dragonTiger.roundDuration
@@ -32,6 +33,14 @@ export class RoundController {
         winner: null,
       }
       const startRound = await this.roundUseCases.startRound(round)
+      SocketServer.io.to(`${dragonTiger.uuid}`).emit('round:start', {
+        msg: 'Round opened',
+        round: {
+          start_date: startDate,
+          end_date: futureDate,
+          ID_Ronda: startRound.uuid,
+        },
+      })
       console.log('Round start', startRound)
       return response.status(201).json({ message: 'Round created', round: startRound })
     } catch (error) {
@@ -41,10 +50,10 @@ export class RoundController {
 
   public closeRound = async (ctx: HttpContext) => {
     const { request, response } = ctx
-    const { providerId, roundId, card1, card2 } = request.body()
-
+    const { providerId, roundId, result } = request.body()
+    const { card1, card2 } = result
     try {
-      const dragonTiger = await dragonTigerUseCases.getDragonTigerByUuid(providerId)
+      const dragonTiger = await dragonTigerUseCases.getDragonTigerByProviderId(providerId)
       if (!dragonTiger) {
         return response.status(404).json({ error: 'No se encuentra el dragon tiger!' })
       }
@@ -53,6 +62,8 @@ export class RoundController {
         dragonTiger.uuid as string,
         roundId,
       )
+      console.log('lastRound', lastRound)
+
       if (!lastRound) {
         return response.status(404).json({ error: 'No se encuentra el ultimo round!' })
       }
@@ -63,11 +74,19 @@ export class RoundController {
         result: { card1, card2 },
         winner: winner as DragonTigerWinners,
       })
+      console.log('closeRound', closeRound)
 
       if (!closeRound) {
         return response.status(404).json({ error: 'No se encuentra el Round' })
       }
-
+      SocketServer.io.to(`${dragonTiger.uuid}`).emit('round:end', {
+        msg: 'Round closed',
+        result: {
+          card1,
+          card2,
+        },
+        winner,
+      })
       return response.status(200).json({ message: 'Round closed', round: closeRound })
     } catch (err) {
       return response.status(400).json({ message: 'No se pudo cerrar el round', err })

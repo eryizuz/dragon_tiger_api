@@ -22,5 +22,6 @@ export class Round implements RoundEntity {
     this.crupier = Round.crupier
     this.result = Round.result
     this.winner = Round.winner
+    this.dragonTiger = Round.dragonTiger
   }
 }

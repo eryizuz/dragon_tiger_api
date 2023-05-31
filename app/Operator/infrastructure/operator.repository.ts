@@ -19,7 +19,7 @@ export class OperatorMongoRepository implements OperatorRepository {
     const operator = await OperatorModel.findOneAndUpdate(
       { uuid },
       { available: false },
-      { new: true }
+      { new: true },
     ).exec()
     if (!operator) return null
 
@@ -30,7 +30,7 @@ export class OperatorMongoRepository implements OperatorRepository {
     const operator = await OperatorModel.findOneAndUpdate(
       { uuid },
       { available: true },
-      { new: true }
+      { new: true },
     ).exec()
     if (!operator) return null
 
@@ -48,7 +48,7 @@ export class OperatorMongoRepository implements OperatorRepository {
     const operator = await OperatorModel.findOneAndUpdate(
       { uuid },
       { status: false },
-      { new: true }
+      { new: true },
     ).exec()
     if (!operator) return null
 
@@ -57,7 +57,7 @@ export class OperatorMongoRepository implements OperatorRepository {
 
   public updateOperatorUrls = async (
     uuid: string,
-    operatorUrls: OperatorUrlEntity
+    operatorUrls: OperatorUrlEntity,
   ): Promise<OperatorEntity | null> => {
     const operator = await OperatorModel.findOneAndUpdate({ uuid }, operatorUrls, {
       new: true,
@@ -69,7 +69,7 @@ export class OperatorMongoRepository implements OperatorRepository {
 
   public updateOperator = async (
     uuid: string,
-    dataToUpdate: UpdateOperatorEntity
+    dataToUpdate: UpdateOperatorEntity,
   ): Promise<OperatorEntity | null> => {
     const operator = await OperatorModel.findOneAndUpdate({ uuid }, dataToUpdate, {
       new: true,
@@ -86,12 +86,12 @@ export class OperatorMongoRepository implements OperatorRepository {
 
   public assignChipsToOperator = async (
     uuid: string,
-    chipUuid: string
+    chipUuid: string,
   ): Promise<OperatorEntity | null> => {
     const operator = await OperatorModel.findOneAndUpdate(
       { uuid },
       { $push: { chips: chipUuid } },
-      { new: true }
+      { new: true },
     ).exec()
     if (!operator) return null
 
@@ -102,12 +102,12 @@ export class OperatorMongoRepository implements OperatorRepository {
 
   public deleteChipInOperator = async (
     uuid: string,
-    chipUuid: string
+    chipUuid: string,
   ): Promise<OperatorEntity | null> => {
     const operator = await OperatorModel.findOneAndUpdate(
       { uuid },
       { $pull: { chips: chipUuid } },
-      { new: true }
+      { new: true },
     ).exec()
     if (!operator) return null
 

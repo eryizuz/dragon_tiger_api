@@ -13,32 +13,25 @@ const RoundSchema = new Schema<RoundEntity>(
       card1: {
         value: {
           type: Number,
-          default: 0,
         },
         type: {
           type: String,
-          require: true,
         },
         name: {
-          required: true,
           type: String,
         },
       },
       card2: {
         value: {
           type: Number,
-          default: 0,
         },
         type: {
           type: String,
-          require: true,
         },
         name: {
-          required: true,
           type: String,
         },
       },
-      default: null,
     },
     winner: {
       type: String,
