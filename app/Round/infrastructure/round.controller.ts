@@ -62,7 +62,6 @@ export class RoundController {
         dragonTiger.uuid as string,
         roundId,
       )
-      console.log('lastRound', lastRound)
 
       if (!lastRound) {
         return response.status(404).json({ error: 'No se encuentra el ultimo round!' })
@@ -86,6 +85,12 @@ export class RoundController {
           card2,
         },
         winner,
+      })
+
+      worker.postMessage({
+        cmd: 'jackpot-update',
+        dragonTigerId: dragonTiger.uuid,
+        roundId: lastRound.uuid,
       })
       return response.status(200).json({ message: 'Round closed', round: closeRound })
     } catch (err) {

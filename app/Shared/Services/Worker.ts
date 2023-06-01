@@ -1,5 +1,6 @@
 import { parentPort } from 'worker_threads'
 import { connect } from 'mongoose'
+import { betJackpotUpdater } from '../Helpers/dragon-tiger-utils'
 
 const MONGO_URL = <string>process.env.MONGO_URI
 
@@ -15,12 +16,9 @@ parentPort?.on('message', async (data) => {
   const { cmd } = data
 
   switch (cmd) {
-    case 'pay-winners': {
-      /* const { winnersData, result } = data
-      payWinnersWorker(winnersData, Number(result))
-      parentPort?.postMessage({
-        msg: 'pay-winners-success',
-      }) */
+    case 'jackpot-update': {
+      const { dragonTigerId, roundId } = data
+      betJackpotUpdater(dragonTigerId, roundId)
 
       break
     }

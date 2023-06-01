@@ -5,11 +5,13 @@ import {
   picaCartas,
   tigerDragonWinnersTypes,
   treblolCartas,
-} from 'App/Bet/domain/Card'
+} from '../../Bet/domain/Card'
 import { randomNumber } from './randomNumber'
-import { DragonTigerWinners } from 'App/Round/domain/round.entity'
-import { DragonTigerEntity } from 'App/Dragon-tiger/domain/dragonTiger.entity'
-import { BetEntity } from 'App/Bet/domain/bet.entity'
+import { DragonTigerWinners } from '../../Round/domain/round.entity'
+import { DragonTigerEntity } from '../../Dragon-tiger/domain/dragonTiger.entity'
+import { BetEntity } from '../../Bet/domain/bet.entity'
+import betModel from '../../Bet/infrastructure/bet.model'
+import RoundModel from '../../Round/infrastructure/round.model'
 
 export const getRandomCard = () => {
   const randomNum = randomNumber(1, 4)
@@ -136,4 +138,52 @@ export const getBetEarnings = (
     }
   }
   return earning
+}
+
+export const betJackpotUpdater = async (dragonTigerId: string, roundId: string) => {
+  const round = await RoundModel.findOne({ uuid: roundId })
+  if (!round) {
+    console.log('round no encontrado')
+    return
+  }
+  const bets = await betModel.find({
+    'dragonTiger': dragonTigerId,
+    'bet.jackpot.rounds': {
+      $lt: 7,
+      $gte: 0,
+    },
+  })
+
+  if (!bets.length) {
+    console.log('no bets con jackpots validos')
+    return
+  }
+  const { winner } = round
+  const betTolose = bets.filter((bet) => bet.bet.jackpot.winner !== winner)
+  const betToKeepWinning = bets.filter((bet) => bet.bet.jackpot.winner === winner)
+
+  const betsLosersSaved = betTolose.map((b) => {
+    return betModel.findOneAndUpdate(
+      { uuid: b.uuid },
+      {
+        'bet.jackpot.rounds': -1,
+      },
+    )
+  })
+
+  const betsWinnersSaved = betToKeepWinning.map((b) => {
+    return betModel.findOneAndUpdate(
+      { uuid: b.uuid },
+      {
+        'bet.jackpot.rounds': b.bet.jackpot.rounds + 1,
+      },
+    )
+  })
+
+  try {
+    const betsSaved = await Promise.all([...betsLosersSaved, ...betsWinnersSaved])
+    console.log('betsSaved', betsSaved)
+  } catch (err) {
+    console.log('err', err)
+  }
 }
