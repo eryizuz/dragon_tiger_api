@@ -12,6 +12,7 @@ import { DragonTigerEntity } from '../../Dragon-tiger/domain/dragonTiger.entity'
 import { BetEntity } from '../../Bet/domain/bet.entity'
 import betModel from '../../Bet/infrastructure/bet.model'
 import RoundModel from '../../Round/infrastructure/round.model'
+import SocketServer from '../Services/SocketServer'
 
 export const getRandomCard = () => {
   const randomNum = randomNumber(1, 4)
@@ -186,4 +187,33 @@ export const betJackpotUpdater = async (dragonTigerId: string, roundId: string) 
   } catch (err) {
     console.log('err', err)
   }
+}
+
+export const jackpotPayer = async (dragonTigerId: string, roundId: string) => {
+  const round = await RoundModel.findOne({ uuid: roundId })
+  if (!round) {
+    console.log('round no encontrado')
+    return
+  }
+  const bets = await betModel.find({
+    'dragonTiger': dragonTigerId,
+    'bet.jackpot.rounds': 7,
+  })
+
+  if (!bets.length) {
+    console.log('no hay ganaderes de jackpot')
+    return
+  }
+
+  await betModel.updateMany(
+    {
+      'dragonTiger': dragonTigerId,
+      'bet.jackpot.rounds': 7,
+    },
+    { 'bet.jackpot.rounds': -1 },
+  )
+
+  SocketServer.io.to(`${dragonTigerId}`).emit('round:end', {
+    msg: 'Round closed',
+  })
 }
