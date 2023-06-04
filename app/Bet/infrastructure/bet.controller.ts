@@ -1,10 +1,15 @@
 import { HttpContext } from '@adonisjs/core/build/standalone'
 import { BetUseCases } from '../application/betUseCases'
 import { BetEntity } from '../domain/bet.entity'
-import { roundUseCases } from 'App/Round/infrastructure/dependencies'
-import { dragonTigerUseCases } from 'App/Dragon-tiger/infrastructure/dependencies'
-import { getBetEarnings, useWinnerFilter } from 'App/Shared/Helpers/dragon-tiger-utils'
-import { DragonTigerWinners } from 'App/Round/domain/round.entity'
+import { roundUseCases } from '../../Round/infrastructure/dependencies'
+import { dragonTigerUseCases } from '../../Dragon-tiger/infrastructure/dependencies'
+import {
+  getBetEarnings,
+  useGoldenK,
+  useWinnerFilter,
+} from '../../Shared/Helpers/dragon-tiger-utils'
+import { DragonTigerWinners } from '../../Round/domain/round.entity'
+import { Card } from '../domain/Card'
 
 export class BetController {
   constructor(private betUseCases: BetUseCases) {}
@@ -38,7 +43,7 @@ export class BetController {
 
     // comprobar player
 
-    const { winner } = round
+    const { winner, result } = round
     const winnerFilter = useWinnerFilter(winner as DragonTigerWinners)
     const betWinner = await this.betUseCases.getWinner({
       round: round.uuid,
@@ -48,7 +53,8 @@ export class BetController {
     if (!betWinner) {
       return response.ok({ message: "you have not won :'(", winner, win: false })
     }
-    const earning = getBetEarnings(winner as DragonTigerWinners, dragonTiger, betWinner)
+    const isGoldenK = useGoldenK(result?.card1 as Card, result?.card2 as Card)
+    const earning = getBetEarnings(winner as DragonTigerWinners, dragonTiger, betWinner, isGoldenK)
 
     return response.status(200).json({ message: "you've won!", win: true, winner, earning })
   }

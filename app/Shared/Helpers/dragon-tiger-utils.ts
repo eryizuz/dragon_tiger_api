@@ -12,7 +12,6 @@ import { DragonTigerEntity } from '../../Dragon-tiger/domain/dragonTiger.entity'
 import { BetEntity } from '../../Bet/domain/bet.entity'
 import betModel from '../../Bet/infrastructure/bet.model'
 import RoundModel from '../../Round/infrastructure/round.model'
-import SocketServer from '../Services/SocketServer'
 
 export const getRandomCard = () => {
   const randomNum = randomNumber(1, 4)
@@ -94,46 +93,62 @@ export const useWinnerFilter = (roundWinner: DragonTigerWinners) => {
   return filter
 }
 
+export const useGoldenK = (card1: Card, card2: Card): boolean => {
+  const isGoldeK1 = card1.name === 'KGold'
+  const isGoldeK2 = card2.name === 'KGold'
+
+  return Boolean(isGoldeK1 || isGoldeK2)
+}
+
 export const getBetEarnings = (
   roundWinner: DragonTigerWinners,
   dragonTiger: DragonTigerEntity,
   bet: BetEntity,
+  isGoldenK: boolean,
 ) => {
-  const { chanceSimple, tie, perfectTie } = dragonTiger
+  const { chanceSimple, tie, perfectTie, goldenK } = dragonTiger
   const {
     bet: { dragon, tiger, perfectTie: perfectTieAmount, tie: tieAmount },
   } = bet
   const earning = {}
   switch (roundWinner) {
     case 'dragon': {
+      let earning = dragon * chanceSimple
+      if (isGoldenK) earning = dragon * goldenK
       Object.assign(earning, {
         amountOriginal: dragon,
         bet: 'dragon',
-        earning: dragon * chanceSimple,
+        earning: earning,
       })
       break
     }
     case 'tiger': {
+      let earning = tiger * chanceSimple
+      if (isGoldenK) earning = tiger * goldenK
       Object.assign(earning, {
         amountOriginal: tiger,
         bet: 'tiger',
-        earning: tiger * chanceSimple,
+        earning,
       })
       break
     }
     case 'tie': {
+      let earning = tie * tieAmount
+      if (isGoldenK) earning = tie * goldenK
       Object.assign(earning, {
         amountOriginal: tieAmount,
         bet: 'tie',
-        earning: tie * tieAmount,
+        earning,
       })
       break
     }
     case 'perfectTie': {
+      let earning = perfectTieAmount * perfectTie
+      if (isGoldenK) earning = perfectTieAmount * goldenK
       Object.assign(earning, {
         amountOriginal: perfectTieAmount,
         bet: 'perfectTie',
-        earning: perfectTie * perfectTieAmount,
+        earning,
       })
       break
     }
@@ -213,7 +228,7 @@ export const jackpotPayer = async (dragonTigerId: string, roundId: string) => {
     { 'bet.jackpot.rounds': -1 },
   )
 
-  SocketServer.io.to(`${dragonTigerId}`).emit('round:end', {
+  /* SocketServer.io.to(`${dragonTigerId}`).emit('round:end', {
     msg: 'Round closed',
-  })
+  }) */
 }
