@@ -63,6 +63,7 @@ export class BetController {
   public jackpotWinners = async (ctx: HttpContext) => {
     const { request, response } = ctx
     const { bets, jackpot } = request.body()
+    console.log('Congrats!, you have won a jackpot')
 
     for (let i = 0; i < bets.length; i++) {
       const bet: BetEntity = bets[i]
