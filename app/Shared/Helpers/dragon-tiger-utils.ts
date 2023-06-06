@@ -120,7 +120,7 @@ export const getBetEarnings = (
       Object.assign(earning, {
         amountOriginal: dragon,
         bet: 'dragon',
-        earning: earning,
+        earning: auxEarning,
       })
       break
     }
@@ -130,7 +130,7 @@ export const getBetEarnings = (
       Object.assign(earning, {
         amountOriginal: tiger,
         bet: 'tiger',
-        earning,
+        earning: auxEarning,
       })
       break
     }
@@ -140,7 +140,7 @@ export const getBetEarnings = (
       Object.assign(earning, {
         amountOriginal: tieAmount,
         bet: 'tie',
-        earning,
+        earning: auxEarning,
       })
       break
     }
@@ -150,7 +150,7 @@ export const getBetEarnings = (
       Object.assign(earning, {
         amountOriginal: perfectTieAmount,
         bet: 'perfectTie',
-        earning,
+        earning: auxEarning,
       })
       break
     }
