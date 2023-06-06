@@ -229,11 +229,11 @@ export const jackpotPayer = async (dragonTigerId: string, roundId: string) => {
     },
     { 'bet.jackpot.rounds': -1 },
   )
-
+  console.log('jackpot winner sent')
   const dragonTiger = await DragonTigerModel.findOne({ uuid: dragonTigerId })
   const { jackpot } = dragonTiger as DragonTigerEntity
 
-  const request = new AxiosAdapter(`${process.env.BACK_URL}` as string)
+  const request = new AxiosAdapter(`${process.env.BACK_URL}bet/jackpot` as string)
 
   try {
     const response = await request.post({ bets, jackpot })
