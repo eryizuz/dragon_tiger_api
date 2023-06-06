@@ -6,12 +6,12 @@ SocketServer.boot()
  */
 
 SocketServer.io.on('connection', (socket) => {
-
-  const gameUuid = socket.handshake.query["gameUuid"];
-  const room = `${gameUuid}`;
-  const rooms = [room];
-  socket.join(rooms);
-
+  const gameUuid = socket.handshake.query['gameUuid']
+  const user = socket.handshake.query['user']
+  const room = `${gameUuid}`
+  const userRoom = `${gameUuid}-${user}`
+  const rooms = [room, userRoom]
+  socket.join(rooms)
 
   socket.emit('news', { hello: 'world' })
 
