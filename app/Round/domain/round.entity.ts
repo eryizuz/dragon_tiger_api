@@ -1,4 +1,4 @@
-import { Card } from 'App/Bet/domain/Card'
+import { Card } from '../../Bet/domain/Card'
 
 export interface DragonTigerResultType {
   card1: Card

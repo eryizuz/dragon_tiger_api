@@ -1,4 +1,4 @@
-import { DragonTigerWinners } from 'App/Round/domain/round.entity'
+import { DragonTigerWinners } from '../../Round/domain/round.entity'
 
 export interface JackpotBet {
   amount: number

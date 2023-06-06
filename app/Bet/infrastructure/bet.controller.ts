@@ -10,6 +10,7 @@ import {
 } from '../../Shared/Helpers/dragon-tiger-utils'
 import { DragonTigerWinners } from '../../Round/domain/round.entity'
 import { Card } from '../domain/Card'
+import SocketServer from 'App/Shared/Services/SocketServer'
 
 export class BetController {
   constructor(private betUseCases: BetUseCases) {}
@@ -57,5 +58,29 @@ export class BetController {
     const earning = getBetEarnings(winner as DragonTigerWinners, dragonTiger, betWinner, isGoldenK)
 
     return response.status(200).json({ message: "you've won!", win: true, winner, earning })
+  }
+
+  public jackpotWinners = async (ctx: HttpContext) => {
+    const { request, response } = ctx
+    const { bets, jackpot } = request.body()
+
+    for (let i = 0; i < bets.length; i++) {
+      const bet: BetEntity = bets[i]
+
+      const {
+        player,
+        dragonTiger,
+        bet: {
+          jackpot: { amount },
+        },
+      } = bet
+      SocketServer.io.to(`${dragonTiger}-${player}`).emit('jackpot:winner', {
+        msg: 'Congrats!, you have won a jackpot',
+        originalAmount: amount,
+        earning: amount * jackpot,
+      })
+    }
+
+    response.ok({ msg: 'socket sent' })
   }
 }

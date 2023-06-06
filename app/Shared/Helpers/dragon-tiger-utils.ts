@@ -12,6 +12,8 @@ import { DragonTigerEntity } from '../../Dragon-tiger/domain/dragonTiger.entity'
 import { BetEntity } from '../../Bet/domain/bet.entity'
 import betModel from '../../Bet/infrastructure/bet.model'
 import RoundModel from '../../Round/infrastructure/round.model'
+import { AxiosAdapter } from '../Adapters/axios.adapter'
+import DragonTigerModel from '../../Dragon-tiger/infrastructure/dragonTiger.model'
 
 export const getRandomCard = () => {
   const randomNum = randomNumber(1, 4)
@@ -228,7 +230,16 @@ export const jackpotPayer = async (dragonTigerId: string, roundId: string) => {
     { 'bet.jackpot.rounds': -1 },
   )
 
-  /* SocketServer.io.to(`${dragonTigerId}`).emit('round:end', {
-    msg: 'Round closed',
-  }) */
+  const dragonTiger = await DragonTigerModel.findOne({ uuid: dragonTigerId })
+  const { jackpot } = dragonTiger as DragonTigerEntity
+
+  const request = new AxiosAdapter(`${process.env.BACK_URL}` as string)
+
+  try {
+    const response = await request.post({ bets, jackpot })
+
+    return response
+  } catch (error) {
+    console.log('err sending winners to socket', error)
+  }
 }

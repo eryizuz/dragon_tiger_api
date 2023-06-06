@@ -1,6 +1,6 @@
 import { parentPort } from 'worker_threads'
 import { connect } from 'mongoose'
-import { betJackpotUpdater } from '../Helpers/dragon-tiger-utils'
+import { betJackpotUpdater, jackpotPayer } from '../Helpers/dragon-tiger-utils'
 
 const MONGO_URL = <string>process.env.MONGO_URI
 
@@ -19,6 +19,7 @@ parentPort?.on('message', async (data) => {
     case 'jackpot-update': {
       const { dragonTigerId, roundId } = data
       betJackpotUpdater(dragonTigerId, roundId)
+      jackpotPayer(dragonTigerId, roundId)
 
       break
     }
