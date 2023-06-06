@@ -115,8 +115,8 @@ export const getBetEarnings = (
   const earning = {}
   switch (roundWinner) {
     case 'dragon': {
-      let earning = dragon * chanceSimple
-      if (isGoldenK) earning = dragon * goldenK
+      let auxEarning = dragon * chanceSimple
+      if (isGoldenK) auxEarning = dragon * goldenK
       Object.assign(earning, {
         amountOriginal: dragon,
         bet: 'dragon',
@@ -125,8 +125,8 @@ export const getBetEarnings = (
       break
     }
     case 'tiger': {
-      let earning = tiger * chanceSimple
-      if (isGoldenK) earning = tiger * goldenK
+      let auxEarning = tiger * chanceSimple
+      if (isGoldenK) auxEarning = tiger * goldenK
       Object.assign(earning, {
         amountOriginal: tiger,
         bet: 'tiger',
@@ -135,8 +135,8 @@ export const getBetEarnings = (
       break
     }
     case 'tie': {
-      let earning = tie * tieAmount
-      if (isGoldenK) earning = tie * goldenK
+      let auxEarning = tie * tieAmount
+      if (isGoldenK) auxEarning = tie * goldenK
       Object.assign(earning, {
         amountOriginal: tieAmount,
         bet: 'tie',
@@ -145,8 +145,8 @@ export const getBetEarnings = (
       break
     }
     case 'perfectTie': {
-      let earning = perfectTieAmount * perfectTie
-      if (isGoldenK) earning = perfectTieAmount * goldenK
+      let auxEarning = perfectTieAmount * perfectTie
+      if (isGoldenK) auxEarning = perfectTieAmount * goldenK
       Object.assign(earning, {
         amountOriginal: perfectTieAmount,
         bet: 'perfectTie',
