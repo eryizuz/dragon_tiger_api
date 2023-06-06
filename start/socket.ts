@@ -7,7 +7,7 @@ SocketServer.boot()
 
 SocketServer.io.on('connection', (socket) => {
   const gameUuid = socket.handshake.query['gameUuid']
-  const user = socket.handshake.query['user']
+  const user = socket.handshake.query['userId']
   const room = `${gameUuid}`
   const userRoom = `${gameUuid}-${user}`
   const rooms = [room, userRoom]
